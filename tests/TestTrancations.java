@@ -1,8 +1,6 @@
 import junit.framework.TestCase;
 
-import java.security.*;
-
-public class Test extends TestCase {
+public class TestTrancations extends TestCase {
     public void testTransactionIDs() {
         Transaction tx1 = new Transaction();
         byte[] txID1 = tx1.getRawTx();
@@ -17,18 +15,5 @@ public class Test extends TestCase {
         Transaction tx1 = new Transaction();
         tx1.finalize();
         assertNotNull(tx1.getHash());
-    }
-
-    public void testCryptoTest() {
-        KeyPairGenerator gen = null;
-        try {
-            gen = KeyPairGenerator.getInstance("RSA");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        gen.initialize(1024,new SecureRandom());
-        KeyPair keys=gen.generateKeyPair();
-        PublicKey publicKey=keys.getPublic();
-        PrivateKey privateKey=keys.getPrivate();
     }
 }
