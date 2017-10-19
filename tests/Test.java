@@ -13,6 +13,7 @@ public class Test extends TestCase {
 
     public void testTransactionHashes() {
         Transaction tx1 = new Transaction();
+        tx1.finalize();
         assertNotNull(tx1.getHash());
     }
 }
