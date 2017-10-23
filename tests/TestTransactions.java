@@ -20,26 +20,16 @@ public class TestTransactions extends TestCase {
     }
 
     public void testTransactionInputOutput() {
-        KeyPairGenerator gen = null;
-        try {
-            gen = KeyPairGenerator.getInstance("RSA");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        assert gen != null;
+        KeyPair scroogeKeys = CryptoHelper.generateKeys();
+        Transaction txCreateNewCoins = new Transaction();
+        txCreateNewCoins.addOutput(1, scroogeKeys.getPublic());
 
-        gen.initialize(1024,new SecureRandom());
-        KeyPair keys=gen.generateKeyPair();
-        PublicKey publicKey=keys.getPublic();
-        PrivateKey privateKey=keys.getPrivate();
+        KeyPair goofyKeys = CryptoHelper.generateKeys();
+        Transaction txPayOneCoinToGoofy = new Transaction();
+        txPayOneCoinToGoofy.addInput(txCreateNewCoins.getHash(), 0);
+        txPayOneCoinToGoofy.addOutput(1, goofyKeys.getPublic());
+        txPayOneCoinToGoofy.addSignature(CryptoHelper.sign(scroogeKeys.getPrivate(), txPayOneCoinToGoofy.getRawDataToSign(0)), 0);
 
-
-        Transaction txOutput = new Transaction();
-        txOutput.addOutput(1, publicKey);
-
-        assertNull(txOutput.getOutput(10));
-
-        Transaction txInput = new Transaction();
-        txInput.addInput(txOutput.getHash(), 0);
+        assertTrue(Crypto.verifySignature(scroogeKeys.getPublic(), txPayOneCoinToGoofy.getRawDataToSign(0), txPayOneCoinToGoofy.getInput(0).signature));
     }
 }
