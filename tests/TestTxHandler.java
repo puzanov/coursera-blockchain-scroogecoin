@@ -3,7 +3,7 @@ import junit.framework.TestCase;
 import java.security.KeyPair;
 import java.util.Arrays;
 
-public class TextTxHandler extends TestCase {
+public class TestTxHandler extends TestCase {
     public void testUTXOPool() {
         KeyPair scroogeKeys = CryptoHelper.generateKeys();
         Transaction txCreateNewCoins = new Transaction();
